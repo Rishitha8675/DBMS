@@ -1,0 +1,45 @@
+                        AI23BTECH11020
+
+                    
+                   
+Create table Employees(
+  employee_id Varchar(5) PRIMARY KEY,
+  first_name Varchar(20) not null,
+  last_name Varchar(20) not null,
+  email Varchar(25) unique,
+  phone_number Varchar(10) unique,
+  salary int,
+  manager_id Varchar(5),
+  department_id Varchar(3) not null,
+  foreign key (manager_id) references Employees(employee_id) on delete set null
+);
+
+insert into Employees values('4523','Rama','Rao','rao@gmail.com','1234567890',30000,NULL,12);
+insert into Employees values('4102',' Prasad','Rao','prasad@gmail.com','5678909012',70000,'4523','12');
+insert into Employees values('5123','Raja','Shekhar','Raja@gmail.com','9999999921',55000,'4523','10');
+insert into Employees values('3213','Ranga','Reddy','reddy@gmail.com','3421398763',95000,'4523','11');
+insert into Employees values('4213','Waqar','Mir','waqar@gmail.com','3421298754',50000,'4523','09');
+
+
+Create table Sales_Table(
+    sales_no Varchar(4) PRIMARY KEY,
+    salesman_id Varchar(5),
+    foreign key(salesman_id) references Employees(employee_id) on delete cascade,
+    item_name Varchar(20),
+    Sales_Amount int
+);
+
+insert into Sales_Table values('1020','4102','USB Drive',6000);
+insert into Sales_Table values('1021','4213','Lan Cable',4000);
+insert into Sales_Table values('1022','3213','DRAM 10GB',44000);
+insert into Sales_Table values('1023','4102','HDMI Cable',7000);
+insert into Sales_Table values('1024','4213','Monitor',54000);
+
+Select first_name,last_name From Employees where salary>=50000;
+
+Select sales_no , item_name , Employees.first_name As Salesman_first_name, Employees.last_name As Salesman_last_name from Employees, Sales_Table where Sales_Table.salesman_id = Employees.Employee_Id;
+
+SELECT Sales_Table.sales_no, Sales_Table.item_name, E1.first_name As Salesman_First_Name, E1.last_name As Salesman_Last_Name, E2.first_name As Manager_First_Name, E2.last_name As Manager_Last_Name
+FROM Sales_Table
+JOIN Employees E1 ON Sales_Table.salesman_id = E1.employee_id
+JOIN Employees E2 ON E1.manager_id = E2.employee_id;
